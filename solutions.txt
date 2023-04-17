@@ -1,0 +1,2 @@
+Ques. What is the difference between git restore filename and git restore --staged filename?
+Solution. It is used to remove the changes that you have done in the file [D[D[D[D[D[D[D[D[D[D[D[D[D[D[Cmad[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmeaning all the modifications are removed while in restore [D[D[D[D[D[D[D[D[Cr[Dr[De[D[Dr[D[Dgit [C[C git restore --staged filename is used to remove the changes when the modified changes are even added to it
