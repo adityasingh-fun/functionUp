@@ -1,32 +1,69 @@
 const express = require('express');
 const { route } = require('express/lib/application');
 const router = express.Router();
-const commonFile = require('./common')
-const myUnderscore = require('underscore')
 
-router.get('/test-me', function (req, res) {
-    res.send('This should be working!')
+
+
+
+router.get('/movies', function (req, res) {
+    const mov = ["dil chahata hai","Zindagi na milegi doobara","Race","3 idiots"]
+
+    res.send(mov)
 });
 
-router.get('/test-you', function (req, res) {
-    console.log('The exported module is: ',commonFile)
-    commonFile.doSomething()
-    console.log('This is the constant I created', commonFile.name)
-    res.send('Hello there, welcome to this application!')
+router.get('/movies/:indexNumber', function (req, res) {
+    const mov = ["dil chahata hai","Zindagi na milegi doobara","Race","3 idiots"];
+    let index = req.params.indexNumber;
+    if(index < 0 || index > mov.length){
+        res.send("Data not found")
+    }
+    else{
+        res.send(mov[index]);
+    }
+
+    // console.log(index)
+    
 });
 
-router.get('/test-underscore', function(req, res){
-    let result = myUnderscore.first([11,12,23,44,15], 4)
-    console.log('the result is',result)
-    res.send('done')
+router.get('/films', function(req, res){
+    const arr = [ {
+        id: 1,
+        name: "The Shining"
+       }, {
+        id: 2,
+        name: "Incendies"
+       }, {
+        id: 3,
+        name: "Rang de Basanti"
+       }, {
+        id: 4,
+        name: "Finding Nemo"
+       }]
+
+       return res.send(arr)
+       
 })
 
-router.get('/cohorts', function (request, response){
-    // logic to get the cohorts from database
-    // logic tp get only the active cohorts
-    // logic to get only the cohort with a size than 50
-    // logic to get only the backend cohorts
-    response.send(['technetium','nobelium'])
+router.get('/films/:filmId', function (req, res){
+    const arr = [ {
+        id: 1,
+        name: "The Shining"
+       }, {
+        id: 2,
+        name: "Incendies"
+       }, {
+        id: 3,
+        name: "Rang de Basanti"
+       }, {
+        id: 4,
+        name: "Finding Nemo"
+       }]
+    for(let i=0;i<arr.length;i++){
+        if(arr[i].id == req.params.filmId){
+            return res.send(arr[i]);
+        } 
+    } 
+    return res.send("‘No movie exists with this id")  
 })
 
 router.get('/students', function(req, res){
