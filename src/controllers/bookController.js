@@ -1,5 +1,6 @@
 const { count } = require("console")
 const BookModel= require("../models/bookModel")
+const authorModel = require('../models/authorModel')
 
 const createBook= async function (req, res) {
     let data= req.body
@@ -8,13 +9,48 @@ const createBook= async function (req, res) {
     res.send({msg: savedData})
 }
 
-const getBooksData= async function (req, res) {
-    let allBooks= await BookModel.find( {authorName : "HO" } )
-    console.log(allBooks)
-    if (allBooks.length > 0 )  res.send({msg: allBooks, condition: true})
-    else res.send({msg: "No books found" , condition: false})
+const createAuthor = async function(req,res){
+    let data = req.body
+
+    let savedData = await authorModel.create(data)
+    res.send( { msg:savedData})
 }
 
+const getBooksData= async function (req, res) {
+    let id = await authorModel.findOne( {authorName : "Chetan Bhagat" } )
+    console.log(id)
+    let books = await BookModel.find({authorId :id.authorId})
+    res.send( { msg : books})
+    // if (allBooks.length > 0 )  res.send({msg: allBooks, condition: true})
+    // else res.send({msg: "No books found" , condition: false})
+}
+
+
+const updatePrice = async function(req,res){
+    let authorInfo = await BookModel.findOneAndUpdate(
+        { bookName: "Two states"},
+        {$set : {price : 100}},
+        {new : true}
+    )
+    
+    console.log(authorInfo);
+    let authName = await authorModel.find({authorId : authorInfo.authorId}).select({authorName:1, _id :0});
+    console.log(authName);
+    res.send( {msg : authorInfo,authName})
+}
+
+const getbooksRange= async function (req, res) {
+    let authors= await authorModel.find()
+    let data=[]
+    let books=  await BookModel.find({prices:{$gte:50,$lte:100}}).select({author_id:1,_id:0});
+    for(i of books){
+        authors= await authorModel.find({author_id:i.author_id}).select({authorName:1, _id:0})   
+    }
+    data.push(authors)
+    console.log(data)
+    return res.send(data)
+   
+}
 
 const updateBooks= async function (req, res) {
     let data = req.body // {sales: "1200"}
@@ -57,3 +93,6 @@ module.exports.createBook= createBook
 module.exports.getBooksData= getBooksData
 module.exports.updateBooks= updateBooks
 module.exports.deleteBooks= deleteBooks
+module.exports.createAuthor= createAuthor
+module.exports.updatePrice= updatePrice
+module.exports.getbooksRange= getbooksRange
