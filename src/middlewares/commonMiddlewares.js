@@ -5,6 +5,24 @@ const mid1= function ( req, res, next) {
     next()
 }
 
+const midWarUser = function(req,res,next){
+    const storeData = req.headers['isfreeappuser']
+    // console.log(storeData)
+    if(storeData != null){
+        next()
+    }
+    else{
+        console.log(req.headers)
+        req.headers.isFreeAppUser = true
+        // req.isfreeappuser = true
+        console.log(req.headers)
+        // res.send("Request is missing an important header")
+        next()
+    }
+}
+
+
+
 const mid2= function ( req, res, next) {
     console.log("Hi I am a middleware named Mid2")
     next()
@@ -41,6 +59,8 @@ const xyz = function(req, res, next) {
    next()
 }
 
+
+module.exports.midWarUser = midWarUser
 module.exports.mid1= mid1
 module.exports.mid2= mid2
 module.exports.mid3= mid3
