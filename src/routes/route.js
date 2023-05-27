@@ -16,6 +16,6 @@ router.get("/users/:userId", MW.authenticate, MW.authorise, userController.getUs
 router.post("/users/:userId/posts", MW.authenticate, MW.authorise, userController.postMessage)
 
 router.put("/users/:userId", MW.authenticate, MW.authorise, userController.updateUser)
-router.put('/deleteUsers/:userId', MW.authenticate, MW.authorise, userController.deleteUser)
+router.delete('/deleteUsers/:userId', MW.authenticate, MW.authorise, userController.deleteUser)
 
 module.exports = router;

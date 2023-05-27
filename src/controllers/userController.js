@@ -22,7 +22,7 @@ const loginUser = async function (req, res) {
     let user = await userModel.findOne({ emailId: userId, password: password })
 
     if (!user) {
-      res.status(400).send({ status: false, msg: "Incorrect user Id or password" })
+      return res.status(400).send({ status: false, msg: "Incorrect user Id or password" })
     }
 
     let token = jwt.sign(
@@ -49,7 +49,7 @@ const getUserData = async function (req, res) {
     let userId = req.params.userId
     let user = await userModel.findById(userId)
     if (!user) {
-      res.status(404).send({ status: false, msg: "No such user exists" })
+      return res.status(404).send({ status: false, msg: "No such user exists" })
     }
     res.status(200).send({ status: true, msg: user })
   }
@@ -65,7 +65,7 @@ const updateUser = async function (req, res) {
     let userId = req.params.userId
     let user = await userModel.findById(userId)
     if (!user) {
-      res.status(404).send({ status: false, msg: "No user found" })
+      return res.status(404).send({ status: false, msg: "No user found" })
     }
     let data = req.body
     let updateUser = await userModel.findOneAndUpdate(
@@ -85,7 +85,7 @@ const deleteUser = async function (req, res) {
     let userId = req.params.userId
     let user = await userModel.findById(userId)
     if (!user) {
-      res.status(404).send({ status: false, msg: "User not found" })
+      return res.status(404).send({ status: false, msg: "User not found" })
     }
     let deletedUser = await userModel.findOneAndUpdate(
       { _id: userId },
